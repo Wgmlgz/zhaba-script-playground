@@ -3,7 +3,6 @@ import { Registry } from "monaco-textmate";
 import { wireTmGrammars } from "monaco-editor-textmate";
 import { loadWASM } from "onigasm";
 import theme  from "./theme.js";
-import zh_lang_config from "./language-configuration.json";
 let loaded = false;
 
 export async function rewireEditor() {
