@@ -1,4 +1,4 @@
-import { monaco } from "@monaco-editor/react";
+import { monaco, window } from "@monaco-editor/react";
 import { Registry } from "monaco-textmate";
 import { wireTmGrammars } from "monaco-editor-textmate";
 import { loadWASM } from "onigasm";
@@ -26,7 +26,6 @@ export async function rewireEditor() {
       id: "zh",
       configuration: process.env.PUBLIC_URL + `/language-configuration.json`,
     });
-    console.log(process.env.PUBLIC_URL);
     monaco.editor.defineTheme("one-dark-pro", theme);
     wireTmGrammars(monaco, registery, grammars);
   });

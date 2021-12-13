@@ -13,7 +13,7 @@ import {
   Select,
 } from "@mui/material";
 import Editor from "@monaco-editor/react";
-
+import { useRef } from "react";
 import theme from "./theme.js";
 import { ThemeProvider } from "@mui/material/styles";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -23,7 +23,7 @@ import hello_world from "./Examples/hello_world.js";
 import pointer_arithmetic from "./Examples/pointer_arithmetic.js";
 import vector from "./Examples/vector.js";
 
-import { hi } from "./zhaba/zhaba.js";
+import { zh_run_main, zh_get_output, zh_set_main } from "./zhaba/zhaba.js";
 let programs = {
   fibonacci: fibonacci,
   hello_world: hello_world,
@@ -33,17 +33,33 @@ let programs = {
 let program = programs.hello_world;
 
 export default function App() {
+  const editorRef = useRef(null);
+
+  function handleEditorDidMount(_, editor) {
+    editorRef.current = editor;
+    console.log(editor);
+  }
+
+
   const [age, setAge] = React.useState("");
+  const [output, setOutput] = React.useState("there is lonely here (");
 
   const handleChange = (event) => {
     setAge(event.target.value);
     program = programs[event.target.value];
   };
-  setInterval(() => {
-    console.log("da");
-    hi();
-  }, [50]);
 
+  function run() {
+    zh_set_main(editorRef.current.getValue());
+    zh_run_main();
+    setOutput(zh_get_output());
+    console.log(output);
+  }
+
+  // window.editor.getModel().onDidChangeContent((event) => {
+  //   console.log("edit");
+  //   // render();
+  // });
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -122,6 +138,7 @@ export default function App() {
         <Grid item xs={6}>
           <div style={{ padding: "50px", height: "100%" }}>
             <Editor
+              editorDidMount={handleEditorDidMount}
               value={program}
               language="zh"
               options={{
@@ -153,6 +170,7 @@ export default function App() {
               color="white"
               variant="h4"
               fontWeight="bold"
+              onClick={() => run()}
             >
               run
               <br />
@@ -180,9 +198,7 @@ export default function App() {
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography fontFamily="JetBrains Mono">
-                there is lonely here (
-              </Typography>
+              <Typography fontFamily="JetBrains Mono">{output}</Typography>
             </Grid>
             {/* <Grid item style={{ display: "flex", alignItems: "center" }}></Grid>
             <Grid item xs={12}>
