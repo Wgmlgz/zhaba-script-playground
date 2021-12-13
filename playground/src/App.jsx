@@ -1,35 +1,29 @@
 import * as React from "react";
 import "./styles.css";
-import CodeEditor from "./MonacoEditor";
 import {
   Grid,
   AppBar,
-  Container,
   Typography,
   Button,
   CssBaseline,
-  Paper,
-  TextField,
   Toolbar,
   MenuItem,
   InputLabel,
   FormControl,
   Select,
 } from "@mui/material";
-import { padding } from "@mui/system";
-import frog from "./frog.png";
 import Editor from "@monaco-editor/react";
 
 import theme from "./theme.js";
 import { ThemeProvider } from "@mui/material/styles";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
-import fibonacci from "./Examples/fibonacci.js"
+import fibonacci from "./Examples/fibonacci.js";
 import hello_world from "./Examples/hello_world.js";
 import pointer_arithmetic from "./Examples/pointer_arithmetic.js";
 import vector from "./Examples/vector.js";
 
+import { hi } from "./zhaba/zhaba.js";
 let programs = {
   fibonacci: fibonacci,
   hello_world: hello_world,
@@ -45,6 +39,11 @@ export default function App() {
     setAge(event.target.value);
     program = programs[event.target.value];
   };
+  setInterval(() => {
+    console.log("da");
+    hi();
+  }, [50]);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
