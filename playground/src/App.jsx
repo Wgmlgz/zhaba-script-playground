@@ -22,13 +22,15 @@ import fibonacci from "./Examples/fibonacci.js";
 import hello_world from "./Examples/hello_world.js";
 import pointer_arithmetic from "./Examples/pointer_arithmetic.js";
 import vector from "./Examples/vector.js";
+import for_ from "./Examples/for_.js";
 
-import { zh_run_main, zh_get_output, zh_set_main } from "./zhaba/zhaba.js";
+import { zh_run_main, zh_get_output, zh_set_main, zh_init, is_init } from "./zhaba/zhaba.js";
 let programs = {
   fibonacci: fibonacci,
   hello_world: hello_world,
   pointer_arithmetic: pointer_arithmetic,
   vector: vector,
+  for_: for_,
 };
 let program = programs.hello_world;
 
@@ -50,10 +52,14 @@ export default function App() {
   };
 
   function run() {
-    zh_set_main(editorRef.current.getValue());
-    zh_run_main();
-    setOutput(zh_get_output());
-    console.log(output);
+    (async () => {
+      zh_init();
+      while (!is_init) await new Promise((resolve) => setTimeout(resolve, 100));
+        zh_set_main(editorRef.current.getValue());
+        zh_run_main();
+        setOutput(zh_get_output());
+        console.log(output);
+    })();
   }
 
   // window.editor.getModel().onDidChangeContent((event) => {
@@ -127,6 +133,7 @@ export default function App() {
               <MenuItem value={"hello_world"}>hello world</MenuItem>
               <MenuItem value={"fibonacci"}>fibonacci</MenuItem>
               <MenuItem value={"vector"}>vector</MenuItem>
+              <MenuItem value={"for_"}>for</MenuItem>
               <MenuItem value={"pointer_arithmetic"}>
                 pointer arithmetic
               </MenuItem>
@@ -198,7 +205,11 @@ export default function App() {
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography fontFamily="JetBrains Mono">{output}</Typography>
+              <p
+                style={{ fontFamily: "JetBrains Mono", whiteSpace: "pre-line" }}
+              >
+                {output}
+              </p>
             </Grid>
             {/* <Grid item style={{ display: "flex", alignItems: "center" }}></Grid>
             <Grid item xs={12}>

@@ -26,6 +26,7 @@ std::string output;
 EMSCRIPTEN_KEEPALIVE void zh_run_main() {
   zhdata.bools["B"] = true;
   zhdata.bools["show_bytecode"] = true;
+
   std::stringstream ss;
 
   zhdata.out = &ss;

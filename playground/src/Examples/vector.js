@@ -1,17 +1,13 @@
-let program = 
-`use 'vec.zh'
+let program = `use 'range.zh'
+use 'vec.zh'
 
 fn main
   Vec<int> v
   v.ctor()
-  
-  v <<= 1
-  v <<= 2
-  v <<= 3
-  v <<= 4
-  
+  @ i 0..10:
+    v.push_back(i)
+  put 'vector content: '
   v.print()
 
-  v.dtor()
 `;
 export default program;

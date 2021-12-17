@@ -1,9 +1,13 @@
 let program =
-`fn int fib int n:
+`use 'range.zh'
+
+fn int fib int n:
   ? n <= 1: <<< n
   <<< fib(n-1) + fib(n-2)
 
 fn main
-  out fib(20)
+  @ i 0..15
+    out fib(i)
+
 `;
 export default program;
