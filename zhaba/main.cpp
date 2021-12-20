@@ -32,7 +32,7 @@ EMSCRIPTEN_KEEPALIVE void zh_run_main() {
   zhdata.out = &ss;
   std::filesystem::path file_path = "main.zh";
   try {
-    zhdata.std_path = "std";
+    zhdata.std_path = "Zhaba-script/std";
     compileFile(file_path);
     output = ss.str();
     std::cout << "output: " << output << std::endl;

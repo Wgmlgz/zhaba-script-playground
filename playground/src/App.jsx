@@ -11,6 +11,7 @@ import {
   InputLabel,
   FormControl,
   Select,
+  TextField,
 } from "@mui/material";
 import Editor from "@monaco-editor/react";
 import { useRef } from "react";
@@ -194,7 +195,7 @@ export default function App() {
             height: "100%",
           }}
         >
-          <Grid container spacing={3}>
+          <Grid container spacing={3} style={{ height: "100%" }}>
             <Grid item xs={12}>
               <Typography
                 fontFamily="JetBrains Mono"
@@ -204,24 +205,28 @@ export default function App() {
                 Program output:
               </Typography>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} style={{ height: "60%" }}>
               <p
-                style={{ fontFamily: "JetBrains Mono", whiteSpace: "pre-line" }}
+                style={{
+                  fontFamily: "JetBrains Mono",
+                  whiteSpace: "pre-line",
+                  overflowY: "scroll",
+                  height: "100%",
+                }}
+                contenteditable="true"
               >
                 {output}
               </p>
             </Grid>
-            {/* <Grid item style={{ display: "flex", alignItems: "center" }}></Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} style={{ height: "40%" }}>
               <TextField
                 style={{ width: "100%" }}
                 label="Your input"
                 multiline
-                fullWidth
-                variant="filled"
-              spellcheck="false"
+                variant="outlined"
+                spellcheck="false"
               />
-            </Grid> */}
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
