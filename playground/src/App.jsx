@@ -24,6 +24,8 @@ import hello_world from "./Examples/hello_world.js";
 import pointer_arithmetic from "./Examples/pointer_arithmetic.js";
 import vector from "./Examples/vector.js";
 import for_ from "./Examples/for_.js";
+import { styled } from "@mui/material/styles";
+import { red, green, blue } from "@mui/material/colors";
 
 import { zh_run_main, zh_get_output, zh_set_main, zh_init, is_init } from "./zhaba/zhaba.js";
 let programs = {
@@ -34,6 +36,16 @@ let programs = {
   for_: for_,
 };
 let program = programs.hello_world;
+
+const Root = styled("div")(({ theme }) => ({
+  paddingTop: "50px",
+  [theme.breakpoints.up("md")]: {
+    height: "30vh",
+  },
+  [theme.breakpoints.up("lg")]: {
+    height: "100%",
+  },
+}));
 
 export default function App() {
   const editorRef = useRef(null);
@@ -79,7 +91,16 @@ export default function App() {
             fontWeight="bold"
             style={{ margin: "10px" }}
           >
-            🐸 Zhaba-script by wgmlgz
+            Zhaba-script
+          </Typography>
+          <Typography
+            variant="h6"
+            color="white"
+            component="div"
+            fontWeight="bold"
+            style={{ margin: "10px" }}
+          >
+            by wgmlgz🐸
           </Typography>
           <Button
             variant="contained"
@@ -143,8 +164,8 @@ export default function App() {
         </Toolbar>
       </AppBar>
       <Grid container style={{ height: "90vh" }}>
-        <Grid item xs={6}>
-          <div style={{ padding: "50px", height: "100%" }}>
+        <Grid item md={12} lg={5}>
+          <Root>
             <Editor
               editorDidMount={handleEditorDidMount}
               value={program}
@@ -161,11 +182,13 @@ export default function App() {
               }}
               theme={"one-dark-pro"}
             />
-          </div>
+          </Root>
         </Grid>
         <Grid
           item
-          xs={1}
+          item
+          lg={2}
+          md={12}
           style={{
             display: "flex",
             justifyContent: "center",
@@ -189,45 +212,53 @@ export default function App() {
         </Grid>
         <Grid
           item
-          xs={5}
+          item
+          lg={5}
+          md={12}
           style={{
             padding: "50px",
             height: "100%",
           }}
         >
-          <Grid container spacing={3} style={{ height: "100%" }}>
-            <Grid item xs={12}>
-              <Typography
-                fontFamily="JetBrains Mono"
-                color="primary"
-                fontSize="30pt"
-              >
-                Program output:
-              </Typography>
+          {" "}
+          <Root>
+            <Grid container spacing={3} style={{ height: "100%" }}>
+              <Grid item xs={12}>
+                <Typography
+                  fontFamily="JetBrains Mono"
+                  color="primary"
+                  fontSize="30pt"
+                >
+                  Program output:
+                </Typography>
+              </Grid>
+              <Grid item xs={12} style={{ height: "60%" }}>
+                <p
+                  style={{
+                    fontFamily: "JetBrains Mono",
+                    whiteSpace: "pre-line",
+                    overflowY: "scroll",
+                    height: "100%",
+                  }}
+                  contenteditable="true"
+                >
+                  {output}
+                </p>
+              </Grid>
+              <Grid item xs={12} style={{ height: "40%" }}>
+                <TextField
+                  style={{ width: "100%" }}
+                  label="Your input"
+                  multiline
+                  onSubmit={() => {
+                    console.log("aboba");
+                  }}
+                  variant="standard"
+                  spellcheck="false"
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12} style={{ height: "60%" }}>
-              <p
-                style={{
-                  fontFamily: "JetBrains Mono",
-                  whiteSpace: "pre-line",
-                  overflowY: "scroll",
-                  height: "100%",
-                }}
-                contenteditable="true"
-              >
-                {output}
-              </p>
-            </Grid>
-            <Grid item xs={12} style={{ height: "40%" }}>
-              <TextField
-                style={{ width: "100%" }}
-                label="Your input"
-                multiline
-                variant="outlined"
-                spellcheck="false"
-              />
-            </Grid>
-          </Grid>
+          </Root>
         </Grid>
       </Grid>
     </ThemeProvider>
