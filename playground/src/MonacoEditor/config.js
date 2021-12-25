@@ -1,4 +1,4 @@
-import { monaco, window } from "@monaco-editor/react";
+import { monaco } from "@monaco-editor/react";
 import { Registry } from "monaco-textmate";
 import { wireTmGrammars } from "monaco-editor-textmate";
 import { loadWASM } from "onigasm";

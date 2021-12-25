@@ -8,7 +8,8 @@ build:
 	  --std=c++20 \
 	  -s EXPORTED_FUNCTIONS='["_malloc", "_free"]'  \
 	  -s EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]'  \
-		-s NO_DISABLE_EXCEPTION_CATCHING \		-O3 \
+	  -s NO_DISABLE_EXCEPTION_CATCHING \
+	  -O3 \
 	  --embed-file ../Zhaba-script/std
 	
 	sed -i '1s/^/\/* eslint-disable *\/\n /' ../playground/src/zhaba/build.mjs

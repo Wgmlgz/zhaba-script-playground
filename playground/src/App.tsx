@@ -15,27 +15,31 @@ import {
 } from "@mui/material";
 import Editor from "@monaco-editor/react";
 import { useRef } from "react";
-import theme from "./theme.js";
+import theme from "./theme";
 import { ThemeProvider } from "@mui/material/styles";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
-import fibonacci from "./Examples/fibonacci.js";
-import hello_world from "./Examples/hello_world.js";
-import pointer_arithmetic from "./Examples/pointer_arithmetic.js";
-import vector from "./Examples/vector.js";
-import for_ from "./Examples/for_.js";
-import { styled } from "@mui/material/styles";
-import { red, green, blue } from "@mui/material/colors";
+import {
+  fibonacci,
+  hello_world,
+  pointer_arithmetic,
+  vector,
+  for_loop,
+} from "./examples";
 
-import { zh_run_main, zh_get_output, zh_set_main, zh_init, is_init } from "./zhaba/zhaba.js";
-let programs = {
-  fibonacci: fibonacci,
-  hello_world: hello_world,
-  pointer_arithmetic: pointer_arithmetic,
-  vector: vector,
-  for_: for_,
-};
-let program = programs.hello_world;
+import { styled } from "@mui/material/styles";
+
+import { zh_run_main, zh_get_output, zh_set_main, zh_init, is_init } from "./zhaba/zhaba";
+let examples = new Map<string, string>(
+[
+  ["fibonacci", fibonacci],
+  ["hello world", hello_world],
+  ["pointer arithmetic", pointer_arithmetic],
+  ["vector", vector],
+  ["for loop", for_loop],
+]
+);
+let program = hello_world;
 
 const Root = styled("div")(({ theme }) => ({
   paddingTop: "50px",
@@ -48,30 +52,34 @@ const Root = styled("div")(({ theme }) => ({
 }));
 
 export default function App() {
-  const editorRef = useRef(null);
+  const editorRef: any = useRef(null);
 
-  function handleEditorDidMount(_, editor) {
+  function handleEditorDidMount(_: any, editor: any) {
     editorRef.current = editor;
     console.log(editor);
   }
 
 
-  const [age, setAge] = React.useState("");
+  const [example, setExample] = React.useState("");
   const [output, setOutput] = React.useState("there is lonely here (");
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-    program = programs[event.target.value];
+  const handleChange = (event: { target: { value: string }; }) => {
+    setExample(event.target.value);
+    let t = examples.get(event.target.value);
+    if (t !== undefined) program = t;
   };
 
   function run() {
     (async () => {
       zh_init();
       while (!is_init) await new Promise((resolve) => setTimeout(resolve, 100));
+      if (editorRef.current !== null) {
+        // tsignore
         zh_set_main(editorRef.current.getValue());
         zh_run_main();
         setOutput(zh_get_output());
         console.log(output);
+      }
     })();
   }
 
@@ -100,7 +108,7 @@ export default function App() {
             fontWeight="bold"
             style={{ margin: "10px" }}
           >
-            by wgmlgz🐸
+            by wgmlgz
           </Typography>
           <Button
             variant="contained"
@@ -148,17 +156,14 @@ export default function App() {
             <Select
               color="primary"
               id="demo-simple-select"
-              value={age}
+              value={example}
               onChange={handleChange}
               label="Select example"
             >
-              <MenuItem value={"hello_world"}>hello world</MenuItem>
-              <MenuItem value={"fibonacci"}>fibonacci</MenuItem>
-              <MenuItem value={"vector"}>vector</MenuItem>
-              <MenuItem value={"for_"}>for</MenuItem>
-              <MenuItem value={"pointer_arithmetic"}>
-                pointer arithmetic
-              </MenuItem>
+              {Array.from(examples.keys())}
+              {Array.from(examples.keys()).map((key) => (
+                <MenuItem value={key}>{key}</MenuItem>
+              ))}
             </Select>
           </FormControl>
         </Toolbar>
@@ -186,7 +191,6 @@ export default function App() {
         </Grid>
         <Grid
           item
-          item
           lg={2}
           md={12}
           style={{
@@ -211,7 +215,6 @@ export default function App() {
           {/* <img src={frog} style={{ width: "100%" }}></img> */}
         </Grid>
         <Grid
-          item
           item
           lg={5}
           md={12}
@@ -240,7 +243,7 @@ export default function App() {
                     overflowY: "scroll",
                     height: "100%",
                   }}
-                  contenteditable="true"
+                  contentEditable="true"
                 >
                   {output}
                 </p>
@@ -254,7 +257,7 @@ export default function App() {
                     console.log("aboba");
                   }}
                   variant="standard"
-                  spellcheck="false"
+                  spellCheck="false"
                 />
               </Grid>
             </Grid>

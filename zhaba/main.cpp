@@ -7,6 +7,7 @@
 /*1*/ #include "../Zhaba-script/src/Compiler/Compiler.hpp"
 /*2*/ #include "../Zhaba-script/src/TreeLib/TreeLib.hpp"
 /*3*/ #include "../Zhaba-script/src/Interpreter/ToBytecode.hpp"
+
 extern "C" {
 EMSCRIPTEN_KEEPALIVE void hi() {
   std::ofstream of("std/file.txt");
@@ -25,7 +26,7 @@ EMSCRIPTEN_KEEPALIVE void hi() {
 std::string output;
 EMSCRIPTEN_KEEPALIVE void zh_run_main() {
   zhdata.bools["B"] = true;
-  zhdata.bools["show_bytecode"] = true;
+  // zhdata.bools["show_bytecode"] = true;
 
   std::stringstream ss;
 
