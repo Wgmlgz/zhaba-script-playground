@@ -9,33 +9,21 @@
 /*3*/ #include "../Zhaba-script/src/Interpreter/ToBytecode.hpp"
 
 extern "C" {
-EMSCRIPTEN_KEEPALIVE void hi() {
-  std::ofstream of("std/file.txt");
-  of << "impostor";
-  of.close();
-  std::ifstream f("std/file.txt");
-  std::ifstream f2("std/file2.txt");
-  std::string s;
-  std::string s2;
-  f >> s;
-  f2 >> s2;
-  std::cout << s << std::endl;
-  std::cout << s2 << std::endl;
-}
-
 std::string output;
-EMSCRIPTEN_KEEPALIVE void zh_run_main() {
+EMSCRIPTEN_KEEPALIVE void zh_run_main(const char* input) {
   zhdata.bools["B"] = true;
-  // zhdata.bools["show_bytecode"] = true;
 
-  std::stringstream ss;
+  std::stringstream out_stream;
+  std::stringstream in_stream;
 
-  zhdata.out = &ss;
+  zhdata.out = &out_stream;
+  zhdata.in = &in_stream;
+  in_stream << input;
   std::filesystem::path file_path = "main.zh";
   try {
     zhdata.std_path = "Zhaba-script/std";
     compileFile(file_path);
-    output = ss.str();
+    output = out_stream.str();
     std::cout << "output: " << output << std::endl;
   } catch (ParserError err) {
     std::cout << err.toString();
@@ -57,5 +45,5 @@ EMSCRIPTEN_KEEPALIVE void zh_set_main(const char* str) {
 }
 
 int main() {
-  zh_run_main();
+  zh_run_main("");
 }

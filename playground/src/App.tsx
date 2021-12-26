@@ -25,20 +25,28 @@ import {
   pointer_arithmetic,
   vector,
   for_loop,
+  fizz_buzz,
+  int_types,
 } from "./examples";
 
 import { styled } from "@mui/material/styles";
 
-import { zh_run_main, zh_get_output, zh_set_main, zh_init, is_init } from "./zhaba/zhaba";
-let examples = new Map<string, string>(
-[
-  ["fibonacci", fibonacci],
+import {
+  zh_run_main,
+  zh_get_output,
+  zh_set_main,
+  zh_init,
+  is_init,
+} from "./zhaba/zhaba";
+let examples = new Map<string, string>([
   ["hello world", hello_world],
+  ["fibonacci", fibonacci],
   ["pointer arithmetic", pointer_arithmetic],
   ["vector", vector],
   ["for loop", for_loop],
-]
-);
+  ["fizz buzz", fizz_buzz],
+  ["int types", int_types],
+]);
 let program = hello_world;
 
 const Root = styled("div")(({ theme }) => ({
@@ -59,11 +67,13 @@ export default function App() {
     console.log(editor);
   }
 
+  const inputRef: any = useRef(null);
 
   const [example, setExample] = React.useState("");
+  const [input, setInput] = React.useState("");
   const [output, setOutput] = React.useState("there is lonely here (");
 
-  const handleChange = (event: { target: { value: string }; }) => {
+  const handleChange = (event: { target: { value: string } }) => {
     setExample(event.target.value);
     let t = examples.get(event.target.value);
     if (t !== undefined) program = t;
@@ -76,17 +86,13 @@ export default function App() {
       if (editorRef.current !== null) {
         // tsignore
         zh_set_main(editorRef.current.getValue());
-        zh_run_main();
+        zh_run_main(input);
         setOutput(zh_get_output());
         console.log(output);
       }
     })();
   }
 
-  // window.editor.getModel().onDidChangeContent((event) => {
-  //   console.log("edit");
-  //   // render();
-  // });
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -160,9 +166,10 @@ export default function App() {
               onChange={handleChange}
               label="Select example"
             >
-              {Array.from(examples.keys())}
               {Array.from(examples.keys()).map((key) => (
-                <MenuItem value={key}>{key}</MenuItem>
+                <MenuItem value={key} key={key}>
+                  {key}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -223,7 +230,6 @@ export default function App() {
             height: "100%",
           }}
         >
-          {" "}
           <Root>
             <Grid container spacing={3} style={{ height: "100%" }}>
               <Grid item xs={12}>
@@ -243,18 +249,19 @@ export default function App() {
                     overflowY: "scroll",
                     height: "100%",
                   }}
-                  contentEditable="true"
                 >
                   {output}
                 </p>
               </Grid>
               <Grid item xs={12} style={{ height: "40%" }}>
                 <TextField
+                  ref={inputRef}
                   style={{ width: "100%" }}
                   label="Your input"
                   multiline
-                  onSubmit={() => {
-                    console.log("aboba");
+                  onChange={(e: any) => {
+                    setInput(e.target.value);
+                    console.log(input);
                   }}
                   variant="standard"
                   spellCheck="false"
