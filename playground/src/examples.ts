@@ -1,4 +1,7 @@
-export let fibonacci = `use 'range.zh'
+let examples = new Map<string, string>([
+  [
+    'fibonacci',
+    `use 'range.zh'
 
 fn int fib int n:
   ? n <= 1: <<< n
@@ -7,23 +10,29 @@ fn int fib int n:
 fn main
   @ i 0..15
     out fib(i)
-`;
-
-export let for_loop = `use 'range.zh'
+`,
+  ],
+  [
+    'for loop',
+    `use 'range.zh'
 use 'out.zh'
 
 fn main
   @ i:=1000 i>=7 i-=7
     < i < '- 7 =' < (i - 7) <
-`;
-
-export let hello_world = `use 'out.zh'
+`,
+  ],
+  [
+    'hello world',
+    `use 'out.zh'
 
 fn main
   < 'hi world!' <
-`;
-
-export let pointer_arithmetic = `use 'range.zh'
+`,
+  ],
+  [
+    'pointer arithmetic',
+    `use 'range.zh'
 fn main
   size := 10
   p := (malloc(sizeof(int) * size) as intP)
@@ -39,9 +48,11 @@ fn main
   t := p + 5
   t = t - 2
   out(*t)
-`;
-
-export let vector = `use 'range.zh'
+`,
+  ],
+  [
+    'vector',
+    `use 'range.zh'
 use 'vec.zh'
 
 fn main
@@ -51,10 +62,11 @@ fn main
     v.push_back(i)
   put 'vector content: '
   v.print()
-`;
-
-
-export let fizz_buzz = `use 'range.zh'
+`,
+  ],
+  [
+    'fizz buzz',
+    `use 'range.zh'
 use 'out.zh'
 
 fn fizz_buzz int mx
@@ -65,9 +77,11 @@ fn fizz_buzz int mx
     \\ <i<
 
 fn main: fizz_buzz(20)
-`;
-
-export let int_types = `use 'out.zh'
+`,
+  ],
+  [
+    'int types',
+    `use 'out.zh'
 
 fn main
   < 'Literals:' <
@@ -104,5 +118,7 @@ fn main
 
   < 'Unsinged -1:' < < _u8 < _u16 < _u32 < _u64 <
   < 'Singed -1:' < < _i8 < _i16 < _i32 < _i64 <
-`;
-
+`,
+  ],
+])
+export default examples
