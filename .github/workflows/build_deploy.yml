@@ -1,0 +1,40 @@
+name: Deploy React Application
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build_deploy:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [15.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        working-directory: ./playground
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm ci, build
+         working-directory: ./playground
+        run: |
+          npm ci
+          npm run build --if-present
+      - name: Pushes to another repository
+        working-directory: ./playground
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: 'build'
+          destination-github-username: 'wgmlgz'
+          destination-repository-name: 'wgmlgz.github.io'
+          target-directory: 'zhaba'
+          user-email: wgmlgz.god@gmail.com
+          target-branch: gh-pages
