@@ -7,7 +7,7 @@ let loaded = false
 
 export async function rewireEditor() {
   if (!loaded) {
-    await loadWASM('/onigasm.wasm')
+    await loadWASM(process.env.PUBLIC_URL + '/onigasm.wasm')
     loaded = true
   }
 
