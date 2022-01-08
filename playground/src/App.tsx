@@ -49,28 +49,27 @@ export default function App() {
   const [output, setOutput] = useState('there is lonely here (')
   const [active, setActive] = useState(false)
 
-  const handleChange = (event: SelectChangeEvent<string>) => {
+  const handleChange = useCallback((event: SelectChangeEvent<string>) => {
     const example = event.target.value || ''
     setExample(example)
-    let t = examples.get(example) ?? ''
-    program = t
-  }
+    program = examples.get(example) ?? ''
+  }, [])
 
   const reinit = useCallback(() => {
     zh_init().then(() => setActive(true))
   }, [])
-  useEffect(reinit, [])
-  const run = () => {
-    if (editorRef.current) {
-      zh_set_main(editorRef.current.getValue())
-      zh_run_main(input)
-      setOutput(zh_get_output())
-      console.log(output)
 
-      setActive(false)
-      reinit()
-    }
-  }
+  useEffect(reinit, [])
+
+  const run = useCallback(() => {
+    if (!editorRef.current) return
+    zh_set_main(editorRef.current.getValue())
+    zh_run_main(input)
+    setOutput(zh_get_output())
+
+    setActive(false)
+    reinit()
+  }, [input, reinit])
 
   return (
     <ThemeProvider theme={theme}>
@@ -162,6 +161,7 @@ export default function App() {
                 minimap: {
                   enabled: false,
                 },
+                wordWrap: true
               }}
               theme={'one-dark-pro'}
             />
@@ -208,15 +208,15 @@ export default function App() {
                 </Typography>
               </Grid>
               <Grid item xs={12} style={{ height: '60%' }}>
-                <p
+                <pre
                   style={{
                     fontFamily: 'JetBrains Mono',
-                    whiteSpace: 'pre-line',
+                    whiteSpace: 'pre-wrap',
                     overflowY: 'scroll',
                     height: '100%',
                   }}>
                   {output}
-                </p>
+                </pre>
               </Grid>
               <Grid item xs={12} style={{ height: '40%' }}>
                 <TextField
@@ -224,10 +224,7 @@ export default function App() {
                   style={{ width: '100%' }}
                   label='Your input'
                   multiline
-                  onChange={e => {
-                    setInput(e.target.value)
-                    console.log(input)
-                  }}
+                  onChange={e => setInput(e.target.value)}
                   variant='standard'
                   spellCheck='false'
                 />

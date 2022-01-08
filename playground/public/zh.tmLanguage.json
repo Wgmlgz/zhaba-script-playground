@@ -15,17 +15,6 @@
       }
     },
     {
-      "match": "(impl)\\s+([_a-zA-Z0-9]+)",
-      "captures": {
-        "1": {
-          "name": "keyword"
-        },
-        "2": {
-          "name": "entity.name.class"
-        }
-      }
-    },
-    {
       "match": "(use)(.*)$",
       "captures": {
         "1": {
@@ -87,14 +76,6 @@
       }
     },
     {
-      "match": "([_a-zA-Z0-9]+)\\(",
-      "captures": {
-        "1": {
-          "name": "entity.name.function"
-        }
-      }
-    },
-    {
       "match": "\\.([_a-zA-Z0-9]+)\\(",
       "captures": {
         "1": {
@@ -114,7 +95,7 @@
       }
     },
     {
-      "match": "#.*",
+      "match": "#'.*",
       "name": "string.other.cpp"
     },
     {
@@ -129,7 +110,24 @@
     {
       "begin": "'",
       "end": "'",
-      "name": "string.quoted.single"
+      "name": "string.quoted.single",
+      "patterns": [
+        {
+          "match": "\\\\[\\\\n'\"bnt]",
+          "name": "constant.character.escape"
+        }
+      ]
+    },
+    {
+      "begin": "`",
+      "end": "`",
+      "name": "string.quoted.raw",
+      "patterns": [
+        {
+          "match": "\\\\`",
+          "name": "constant.character.escape"
+        }
+      ]
     },
     {
       "include": "#type"
@@ -139,8 +137,33 @@
       "name": "variable.language"
     },
     {
-      "match": "[0-9]+",
-      "name": "constant.int"
+      "match": "(0x[0-9a-fA-F]+|0b[01]+|[0-9]+)([iu][0-9]*)?|(true|false|tru|fls)",
+      "captures": {
+        "1": {
+          "name": "constant.int"
+        },
+        "2": {
+          "name": "storage.type"
+        },
+        "3": {
+          "name": "constant.bool"
+        }
+      }
+    },
+    {
+      "match": "[\\.\\,\\+\\-\\*\\\\\\%\\<\\>\\=\\^\\&\\:\\|\\/\\!\\#]+",
+      "name": "constant.character.escape"
+    },
+    {
+      "match": "([_a-zA-Z0-9]+)\\(",
+      "captures": {
+        "1": {
+          "name": "entity.name.function"
+        },
+        "2": {
+          "name": "entity.name.function"
+        }
+      }
     },
     {
       "match": ":=",
@@ -151,21 +174,30 @@
       "name": "keyword.nextblock"
     },
     {
-      "match": "[\\.\\,\\+\\-\\*\\\\\\%\\<\\>\\=\\^\\&\\:\\|\\/\\!\\#]+|as",
-      "name": "constant.character.escape"
-    },
-    {
-      "match": "[_a-zA-Z0-9]+",
-      "name": "variable"
+      "match": "([_a-zA-Z0-9]+)",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "match": "(as|out|put|malloc|free|sizeof)$",
+              "name": "constant.character.escape"
+            },
+            {
+              "match": "[_a-zA-Z0-9]+",
+              "name": "variable"
+            }
+          ]
+        }
+      }
     }
   ],
   "repository": {
-    "base-type" :{
-      "match": "int|auto|char|str|bool|i32|i64|u32|u64",
+    "base-type": {
+      "match": "int|auto|char|str|bool|i8|i16|i32|i64|u8|u16|u32|u64",
       "name": "storage.type"
     },
-    "type" :{
-      "match": "(([A-Z]([_0-9a-z-A-OQ-Z]+)(P+([a-z-A-OQ-Z]+))*)|int|auto|char|str|bool|i32|i64|u32|u64)(P*)",
+    "type": {
+      "match": "(([A-Z]([_0-9a-z-A-OQ-Z]*)(P+([a-z-A-OQ-Z]+))*)|int|auto|char|str|bool|i8|i16|i32|i64|u8|u16|u32|u64)(P*)",
       "captures": {
         "1": {
           "patterns": [
