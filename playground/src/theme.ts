@@ -14,7 +14,7 @@ const theme = createTheme({
       secondary: '#ABB2BF',
     },
     background: {
-      default: '#082c34',
+      default: '#282c34',
       paper: '#282c34',
     },
     error: {

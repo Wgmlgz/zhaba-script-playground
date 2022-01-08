@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import './styles.css'
 import {
   Grid,
@@ -22,13 +22,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import examples from './examples'
 import { styled } from '@mui/material/styles'
 
-import {
-  zh_run_main,
-  zh_get_output,
-  zh_set_main,
-  zh_init,
-  is_init,
-} from './zhaba/zhaba'
+import { zh_run_main, zh_get_output, zh_set_main, zh_init } from './zhaba/zhaba'
 let program = examples.get('hello world') ?? ''
 
 const Root = styled('div')(({ theme }) => ({
@@ -44,15 +38,16 @@ const Root = styled('div')(({ theme }) => ({
 export default function App() {
   const editorRef = useRef<any>(null)
 
-  const handleEditorDidMount: EditorDidMount = (_, editor) => {
+  const handleEditorDidMount: EditorDidMount = useCallback((_, editor) => {
     editorRef.current = editor
-  }
+  }, [])
 
   const inputRef = useRef<HTMLDivElement>(null)
 
-  const [example, setExample] = React.useState('')
-  const [input, setInput] = React.useState('')
-  const [output, setOutput] = React.useState('there is lonely here (')
+  const [example, setExample] = useState('')
+  const [input, setInput] = useState('')
+  const [output, setOutput] = useState('there is lonely here (')
+  const [active, setActive] = useState(false)
 
   const handleChange = (event: SelectChangeEvent<string>) => {
     const example = event.target.value || ''
@@ -61,18 +56,20 @@ export default function App() {
     program = t
   }
 
-  function run() {
-    ;(async () => {
-      zh_init()
-      while (!is_init) await new Promise(resolve => setTimeout(resolve, 100))
-      if (editorRef.current !== null) {
-        // tsignore
-        zh_set_main(editorRef.current.getValue())
-        zh_run_main(input)
-        setOutput(zh_get_output())
-        console.log(output)
-      }
-    })()
+  const reinit = useCallback(() => {
+    zh_init().then(() => setActive(true))
+  }, [])
+  useEffect(reinit, [])
+  const run = () => {
+    if (editorRef.current) {
+      zh_set_main(editorRef.current.getValue())
+      zh_run_main(input)
+      setOutput(zh_get_output())
+      console.log(output)
+
+      setActive(false)
+      reinit()
+    }
   }
 
   return (
@@ -179,7 +176,7 @@ export default function App() {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Button variant='contained' size='large'>
+          <Button {...{ disabled: !active }} variant='contained' size='large'>
             <Typography
               align='center'
               color='white'
