@@ -22,7 +22,11 @@ export async function rewireEditor() {
       new Registry({
         getGrammarDefinition: async () => ({
           format: 'json',
-          content: await (await fetch('./zh.tmLanguage.json')).text(),
+          content: await (
+            await fetch(
+              'https://raw.githubusercontent.com/Wgmlgz/zhaba-script-vscode/main/zhaba-script/syntaxes/zh.tmLanguage.json'
+            )
+          ).json(),
         }),
       }),
       new Map([['zh', 'source.zhm']])
