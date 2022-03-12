@@ -17,7 +17,6 @@ import { ThemeProvider } from '@mui/material/styles'
 import examples from './examples'
 
 import { ZhEditor } from './ZhEditor'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { ZhDocs } from './ZhDocs'
 
 export default function App() {
@@ -125,7 +124,7 @@ export default function App() {
         </AppBar>
 
         <main style={{ height: '100%' }}>
-          {page == 'docs' ? (
+          {page === 'docs' ? (
             <ZhDocs />
           ) : (
             <ZhEditor example={example} program={program} />

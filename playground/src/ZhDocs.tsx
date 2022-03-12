@@ -1,8 +1,7 @@
-import { Button, List, ListItem, ListItemText } from '@mui/material'
-import axios from 'axios'
+import { List, ListItem, ListItemText } from '@mui/material'
 import React, { FC, ReactNode, useEffect, useState } from 'react'
 import showdown from 'showdown'
-import Editor, { ControlledEditor } from '@monaco-editor/react'
+import { ControlledEditor } from '@monaco-editor/react'
 import HtmlParser from 'react-html-parser'
 
 const converter = new showdown.Converter({ tables: true })
@@ -39,7 +38,7 @@ const TitlesList = (props: any) => {
       {recursiveMap(props.children, (child: any) => {
         return child.type === 'code' &&
           child.props.className &&
-          child.props.className.split(' ')[0] == 'zh' ? (
+          child.props.className.split(' ')[0] === 'zh' ? (
           <InlineCode code={child.props.children[0] ?? ''} />
         ) : (
           child
