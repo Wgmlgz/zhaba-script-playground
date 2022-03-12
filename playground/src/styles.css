@@ -1,2 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans');
+
+p {
+  color: #abb2bf;
+}
+
+code {
+  color: #282c34;
+  font-weight: bold;
+  background-color: #fff;
+  border-radius: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+table {
+  border-spacing: 0;
+  text-align: center;
+}
+
+th {
+  padding: 10px;
+  background-color: #c678dd;
+}
+
+td {
+  padding: 10px;
+  background-color: #98c379;
+}
+
+h1 {
+  color: #282c34;
+  font-weight: bold;
+  background-color: #fff;
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
