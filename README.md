@@ -2,7 +2,7 @@
 Web playground for zhaba-script programming language 
 
 ## Build
-
+- install [node](https://nodejs.org/en/) (17.x)
 - install [emscripten](https://emscripten.org/docs/getting_started/downloads.html)
 - `emcmake cmake .`
 - `cmake --build .`

@@ -1,5 +1,6 @@
 name: Deploy React Application
-
+env: 
+  CI: false
 on:
   push:
     branches: [ main ]
