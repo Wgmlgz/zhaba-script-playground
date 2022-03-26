@@ -1,2 +1,11 @@
 # Zhaba-script-playground
- web playground for Zhaba script programming language 
+Web playground for zhaba-script programming language 
+
+## Build
+
+- install [emscripten](https://emscripten.org/docs/getting_started/downloads.html)
+- `emcmake cmake .`
+- `cmake --build .`
+- `cd playground`
+- `npm i`
+- `npm run start`
