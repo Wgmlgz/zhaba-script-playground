@@ -17,6 +17,9 @@ code {
 table {
   border-spacing: 0;
   text-align: center;
+  border-radius: 10px;
+  -webkit-clip-path: inset(0px round 10px 10px 10px 10px);
+  clip-path: inset(0px round 10px 10px 10px 10px);
 }
 
 th {
