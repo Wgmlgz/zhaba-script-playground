@@ -3,6 +3,7 @@ import React, { FC, ReactNode, useEffect, useState } from 'react'
 import showdown from 'showdown'
 import { ControlledEditor } from '@monaco-editor/react'
 import HtmlParser from 'react-html-parser'
+import { fetchFilesPaths } from './util'
 
 const converter = new showdown.Converter({ tables: true })
 
@@ -60,7 +61,7 @@ const InlineCode: FC<{ code: string }> = ({ code }) => {
       }}>
       <ControlledEditor
         // width={'500px'}
-        height={`${(code.split('\n').length) * (fontSize + 7)}px`}
+        height={`${code.split('\n').length * (fontSize + 7)}px`}
         value={code}
         language='zh'
         options={{
@@ -87,6 +88,7 @@ const InlineCode: FC<{ code: string }> = ({ code }) => {
     </div>
   )
 }
+
 export const ZhDocs = () => {
   const [chapters, setChapters] = useState<IChapter[]>([])
   useEffect(() => {
@@ -94,18 +96,8 @@ export const ZhDocs = () => {
       const files = (
         await Promise.all(
           (
-            await (
-              await fetch(
-                (
-                  await (
-                    await fetch(
-                      'https://api.github.com/repos/wgmlgz/zhaba-script/git/trees/main'
-                    )
-                  ).json()
-                ).tree.filter(({ path }: any) => path === 'docs')[0].url
-              )
-            ).json()
-          ).tree
+            await fetchFilesPaths('docs')
+          )
             .filter(
               ({ path }: { path: string }) => path.split('.').at(-1) === 'md'
             )
@@ -129,10 +121,7 @@ export const ZhDocs = () => {
               )
 
               return {
-                name: path
-                  .split('.')[0]
-                  .replaceAll('_', ' ')
-                  .replaceAll('-', ' '),
+                name: path.substring(0, path.length - 3),
                 content,
               }
             })
