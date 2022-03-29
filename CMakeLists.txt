@@ -76,7 +76,7 @@ set(lib
 add_executable(zhaba ${lib} zhaba/main.cpp)
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
-    add_definitions( "-s NO_DISABLE_EXCEPTION_CATCHING" )
+    add_definitions( "-s NO_DISABLE_EXCEPTION_CATCHING -O3" )
     set_target_properties( zhaba
         PROPERTIES
         ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/playground/src/zhaba"
@@ -89,7 +89,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
             OUTPUT_NAME "build"
             SUFFIX ".mjs"
     )
-    set_target_properties(zhaba PROPERTIES LINK_FLAGS [=[ -o playground/src/zhaba/build.mjs -s NO_DISABLE_EXCEPTION_CATCHING	  --no-entry     -s ENVIRONMENT='web' 	  -s SINGLE_FILE=1  	  -s EXPORT_NAME='WWasmModule' 	  -s USE_ES6_IMPORT_META=0  	  -s TOTAL_MEMORY=500MB 	  --std=c++20     -s "EXPORTED_FUNCTIONS=["_malloc", "_free"]"  	  -s "EXPORTED_RUNTIME_METHODS=["ccall", "cwrap"]"  	   	  -O3  --embed-file ./zhaba-script/std    ]=])
+    set_target_properties(zhaba PROPERTIES LINK_FLAGS [=[ -o playground/src/zhaba/build.mjs -s NO_DISABLE_EXCEPTION_CATCHING	  --no-entry     -s ENVIRONMENT='web' 	  -s SINGLE_FILE=1  	  -s EXPORT_NAME='WWasmModule' 	  -s USE_ES6_IMPORT_META=0  	  -s TOTAL_MEMORY=50MB 	  --std=c++20     -s "EXPORTED_FUNCTIONS=["_malloc", "_free"]"  	  -s "EXPORTED_RUNTIME_METHODS=["ccall", "cwrap"]"  	   	  -O3  --embed-file ./zhaba-script/std    ]=])
 endif()
 
 install(TARGETS zhaba)
