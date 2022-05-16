@@ -3,7 +3,7 @@
 #include <sstream>
 #include <string>
 
-#include "../zhaba-script/src/compiler/Compiler.hpp"
+#include "../zhaba-script/src/compiler/compiler.hpp"
 #include "../zhaba-script/src/interpreter/to_bytecode.hpp"
 #include "../zhaba-script/src/parser/parser.hpp"
 #include "../zhaba-script/src/tree_lib/TreeLib.hpp"

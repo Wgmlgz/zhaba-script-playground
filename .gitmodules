@@ -1,3 +1,4 @@
 [submodule "zhaba-script"]
 	path = zhaba-script
 	url = https://github.com/Wgmlgz/Zhaba-script
+  branch = emcc-fix

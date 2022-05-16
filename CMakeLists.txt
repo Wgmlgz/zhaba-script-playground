@@ -14,9 +14,9 @@ include_directories(tests)
 
 
 set(lib          
-  zhaba-script/src/compiler/Compiler.hpp
-  zhaba-script/src/compiler/CompilerTables.hpp
-  zhaba-script/src/compiler/FileCompiler.hpp
+  zhaba-script/src/compiler/compiler.hpp
+  zhaba-script/src/compiler/tables.hpp
+  zhaba-script/src/compiler/module_compiler.hpp
   zhaba-script/src/compiler/to_c.hpp
   zhaba-script/src/compiler/to_c.cpp
   zhaba-script/src/interpreter/bytecode.hpp
