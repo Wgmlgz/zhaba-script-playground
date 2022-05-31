@@ -32,6 +32,8 @@ set(lib
   zhaba-script/src/lang/lang_tables.hpp
   zhaba-script/src/lang/scope.hpp
   zhaba-script/src/lang/scope.cpp
+  zhaba-script/src/lang/module.cpp
+  zhaba-script/src/lang/module.hpp
   zhaba-script/src/lang/syntax_tree.hpp
   zhaba-script/src/lang/token.cpp
   zhaba-script/src/lang/token.hpp
