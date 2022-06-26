@@ -8,7 +8,6 @@ import {
 } from '@mui/material'
 import Editor, { EditorDidMount } from '@monaco-editor/react'
 import { useRef } from 'react'
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { styled } from '@mui/material/styles'
 
 import { zh_run_main, zh_get_output, zh_set_main, zh_init } from './zhaba/zhaba'
@@ -70,7 +69,7 @@ export const ZhEditor: FC<{ example: string, program: string }> = ({ example, pr
               minimap: {
                 enabled: false,
               },
-              wordWrap: true
+              wordWrap: true,
             }}
             theme={'one-dark-pro'}
           />
@@ -94,7 +93,7 @@ export const ZhEditor: FC<{ example: string, program: string }> = ({ example, pr
             onClick={run}>
             run
             <br />
-            <ArrowForwardIosIcon />
+            {'>'}
           </Typography>
         </Button>
       </Grid>
