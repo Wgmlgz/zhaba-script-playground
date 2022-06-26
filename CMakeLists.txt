@@ -1,17 +1,21 @@
 cmake_minimum_required(VERSION 3.21)
 project(zhaba)
+
 set(CMAKE_CXX_STANDARD 20)
 
+include(FetchContent)
 
-include_directories(zhaba-script/src/compiler)
-include_directories(zhaba-script/src/interpreter)
-include_directories(zhaba-script/src/lang)
-include_directories(zhaba-script/src/libs)
-include_directories(zhaba-script/src/parser)
-include_directories(zhaba-script/src/tree_lib)
-include_directories(zhaba-script/src/zhaba)
-include_directories(tests)
+FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.10.5/json.tar.xz)
+FetchContent_MakeAvailable(json)
 
+FetchContent_Declare(
+  cli11
+  GIT_REPOSITORY https://github.com/CLIUtils/CLI11
+  GIT_TAG        v2.2.0
+)
+FetchContent_MakeAvailable(cli11)
+
+include_directories(src)
 
 set(lib          
   zhaba-script/src/compiler/compiler.hpp
@@ -32,9 +36,9 @@ set(lib
   zhaba-script/src/lang/lang_tables.hpp
   zhaba-script/src/lang/scope.hpp
   zhaba-script/src/lang/scope.cpp
+  zhaba-script/src/lang/syntax_tree.hpp
   zhaba-script/src/lang/module.cpp
   zhaba-script/src/lang/module.hpp
-  zhaba-script/src/lang/syntax_tree.hpp
   zhaba-script/src/lang/token.cpp
   zhaba-script/src/lang/token.hpp
   zhaba-script/src/lang/types.hpp
@@ -52,7 +56,6 @@ set(lib
   zhaba-script/src/tree_lib/Tree.hpp
   zhaba-script/src/tree_lib/TreePrinterASCII.hpp
   zhaba-script/src/tree_lib/TreeLib.hpp
-  zhaba-script/src/zhaba/CmdOptios.hpp
   zhaba-script/src/lang/expression.cpp
   zhaba-script/src/lang/types.cpp
   zhaba-script/src/lang/ast.cpp
@@ -73,8 +76,10 @@ set(lib
   zhaba-script/src/interpreter/to_bytecode.cpp
   zhaba-script/src/interpreter/bytecode.cpp
   zhaba-script/src/interpreter/heap.cpp
-  zhaba-script/src/interpreter/stack.cpp)
-
+  zhaba-script/src/interpreter/stack.cpp
+  zhaba-script/src/zhaba/zhaba.hpp
+  )
+  
 add_executable(zhaba ${lib} zhaba/main.cpp)
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
@@ -93,6 +98,8 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     )
     set_target_properties(zhaba PROPERTIES LINK_FLAGS [=[ -o playground/src/zhaba/build.mjs -s NO_DISABLE_EXCEPTION_CATCHING	  --no-entry     -s ENVIRONMENT='web' 	  -s SINGLE_FILE=1  	  -s EXPORT_NAME='WWasmModule' 	  -s USE_ES6_IMPORT_META=0  	  -s TOTAL_MEMORY=50MB 	  --std=c++20     -s "EXPORTED_FUNCTIONS=["_malloc", "_free"]"  	  -s "EXPORTED_RUNTIME_METHODS=["ccall", "cwrap"]"  	   	  -O3  --embed-file ./zhaba-script/std    ]=])
 endif()
+
+target_link_libraries(zhaba PRIVATE nlohmann_json::nlohmann_json)
 
 install(TARGETS zhaba)
 
